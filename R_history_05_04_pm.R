@@ -1,0 +1,73 @@
+bigmat = matrix(runif(n=10000000,min=5,max=10),nrow= 1000)
+rowvars = apply(bigmat,1,var)
+colvars = apply(bigmat,2,var)
+var(bigmat[,1])
+rowmeans = apply(bigmat,1,mean)
+colmeans = apply(bigmat,2,mean)
+var(rowmeans)
+var(colmeans)
+bigmat = matrix(runif(n=10000000,min=5,max=10),nrow= 1000)
+colmeans = apply(bigmat,2,mean)
+rowmeans = apply(bigmat,1,mean)
+var(colmeans)
+var(rowmeans)
+hist(colmeans,breaks=101)
+hist(colmeans,breaks=101)
+# variance of a uniform distribution between 5 and 10: (b-a)^2 / 12
+# therefore the variance of the means of samples of size 10000 of the same distribution is expected to be (b-a)^2 / 120000
+hist(rowmeans,breaks=101)
+expvar = 25 / 120000
+exp_sd = sqrt(expvar)
+curve(dnorm(x, mean=7.5, sd = exp_sd), col="red", add=T)
+# whenever we want to plot a density curve to fit a histogram, this histogram must have been produced with the option freq=F
+hist(rowmeans,breaks=101, freq=F)
+curve(dnorm(x, mean=7.5, sd = exp_sd), col="red", add=T)
+# let's do the same for the histogram of colmeans:
+hist(colmeans,breaks=101, freq=F)
+expvar = 25 / 12000
+exp_sd = sqrt(expvar)
+curve(dnorm(x, mean=7.5, sd = exp_sd), col="red", add=T)
+hist(colmeans,breaks=101, freq=F)
+# let me estimate the true parameters:
+mean(colmeans)# the sample mean
+sd(colmeans)# the sample standard deviation
+m=mean(colmeans)
+s=sd(colmeans)
+curve(add=T,dnorm(x,mean=m,sd=s),col="red")
+# a distribution that is clearly not normal:
+myweirdsample = c(rnorm(100,mu=10,sd=3),rnorm(100,mu=20,sd=4))
+myweirdsample = c(rnorm(100,mean = =10,sd=3),rnorm(100,mean=20,sd=4))
+myweirdsample = c(rnorm(100,mean =10,sd=3),rnorm(100,mean=20,sd=4))
+length(myweirdsample)
+hist(myweirdsample,freq=F)
+# a better separation between my two modes:
+myweirdsample = c(rnorm(120,mean =10,sd=0.3),rnorm(150,mean=20,sd=1))
+hist(myweirdsample,freq=F)
+m = mean(myweirdsample)
+s = sd(myweirdsample)
+# and overlaying the density curve:
+curve(add=T,dnorm(x,mean=m,sd=s), col='red')
+dat = read.table("/home/jbde/Trainings/Biostats_and_R_bixcop_github/module2_R_biostats/tutorial_data.csv", sep=";",dec=",")
+str(dat)
+dat = read.table("/home/jbde/Trainings/Biostats_and_R_bixcop_github/module2_R_biostats/tutorial_data.csv", sep=";",dec=",",header=T)
+str(dat)
+hist(dat$RANDID)
+# overlaying a uniform distribution
+range(dat$RANDID)
+curve(add=T,dunif(x,min=6000,max=10000000),col='red')
+hist(dat$RANDID,freq=F, xlim=(-100000, 1200000))
+hist(dat$RANDID,freq=F, xlim=c(-100000, 1200000))
+hist(dat$RANDID,freq=F, xlim=c(-100000, 12000000))
+hist(dat$RANDID,freq=F, xlim=c(-1000000, 12000000))
+hist(dat$RANDID,freq=F, xlim=c(-2000000, 12000000))
+curve(add=T,dunif(x,min=6000,max=10000000),col='red')
+hist(dat$RANDID,freq=F, xlim=c(-2000000, 12000000))
+samplepoints = seq(-2000000, 12000000, length.out=101)
+lines(x=samplepoints, y = dunif(samplepoints,min=6000,max=10000000),col='red')
+curve(add=T,dunif(min=6000,max=10000000),col='red')
+curve(add=T,sin,col='red')
+hist(dat$RANDID,freq=F, xlim=c(-2000000, 12000000))
+curve(add=T,dunif(min=6000,max=10000000),n=5,col='red')
+curve(add=T,dunif(x,min=6000,max=10000000),n=5,col='red')
+setwd("/home/jbde/Trainings/Biostats_and_R_bixcop_github/module2_R_biostats/")
+savehistory("R_history_05_04_pm.R")
