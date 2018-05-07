@@ -1,0 +1,27 @@
+?dt
+curve(expr = dt(x,df=2), from=-5, to=5, col='red')
+# if we wanted to generate a vector of simulated observations:
+student_vec = rt(n=10000, df=2)
+hist(student_vec, freq=F, add=T)
+hist(student_vec, freq=F)
+hist(student_vec, freq=F, breaks = 100)
+student_vec = rt(n=10000, df=2)
+hist(student_vec, freq=F, breaks = 100)
+student_vec = rt(n=1000000, df=2)
+hist(student_vec, freq=F, breaks = 100, xlim=c(-5,5))
+hist(student_vec, freq=F, breaks = 100, xlim=c(-5,5))
+hist(student_vec, freq=F, breaks = 1000, xlim=c(-5,5))
+# back to the right solution
+curve(expr = dt(x,df=2), from=-5, to=5, col='red')
+curve(expr = dt(x,df=5), from=-5, to=5, col='green')
+curve(expr = dt(x,df=2), from=-5, to=5, col='red')
+curve(expr = dt(x,df=5), from=-5, to=5, col='green',add=TRUE)
+curve(expr = dt(x,df=2), from=-5, to=5, ylim=c(0,0.5), col='red')
+curve(expr = dt(x,df=2), from=-5, to=5, col='darkgreen', add=T)
+curve(expr = dt(x,df=2), from=-5, to=5, ylim=c(0,0.5), col='red')
+curve(expr = dt(x,df=5), from=-5, to=5, col='darkgreen', add=T)
+curve(expr = dt(x,df=10), from=-5, to=5, col='brown', add=T)
+curve(expr = dt(x,df=100), from=-5, to=5, col='blue', add=T)
+curve(expr = dnorm(x), from=-5, to=5, col='black', add=T) # standard normal
+getwd()
+savehistory("discovering_Student_distrib.R")
