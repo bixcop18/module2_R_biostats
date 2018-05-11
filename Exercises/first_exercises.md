@@ -10,7 +10,7 @@ It is important that you practice your data manipulation skills with R. Please s
 
 ### Trickier: a new dataset with SSR data 
 
-The file `Datasets/ssr_data.xlsx` contains SSR (Simple Sequence Repeat) data pertaining to a tetraploid species (each nucleus has 4 copies of each chromosome, with variations in the genomic content, of course). There are 14 markers or loci named P1 to P16, and 62 samples named Y01 to Y62. The following questions all pertain to that same dataset.
+The file `Datasets/ssr_data.xlsx` contains SSR (Simple Sequence Repeats) data pertaining to a tetraploid species (each nucleus has 4 copies of each chromosome, with variations in the genomic content, of course). There are 14 markers or loci named P1 to P16, and 62 samples named Y01 to Y62. The following questions all pertain to that same dataset.
 
 4. After having a look at it using your favourite spreadsheet editor (e.g. LibreOffice or MS Excel), import the dataset with the appropriate command from Hadley Wickham's `readxl` package. Make sure you get rid of the empty rows and empty columns that are present in the original file.
 
@@ -24,9 +24,9 @@ The file `Datasets/ssr_data.xlsx` contains SSR (Simple Sequence Repeat) data per
 
 8. The most basic measure of genetic diversity for a marker is simply the number of distinct alleles observed for that marker. Calculate a table of genetic diversity per marker.
 
-9. We will say that a sample is heterozygous for a given marker when at least two different alleles are seen in a marker. Calculate two sets of observed heterozygosity values (simple ratios of heterozygous alleles over all observed alleles):
-   + per marker;
-   + per sample.
+9. We will say that a sample is heterozygous for a given marker when at least two different alleles are seen in a marker. Calculate two sets of observed heterozygosity values (simple ratios of heterozygous markers over all observations):
+   + per-marker heterozygosity (over all 62 samples);
+   + per-sample heterozygosity (over all 14 markers).
 
 10. I am not too happy with these binary measures of heterozygosity per sample and per marker: what if I want to consider that a marker with 4 different alleles seen is "more heterozygous" than a marker with only 2 different alleles? Re-run the question above with a new, linear measure of heterozygosity ranging from 0 (for a unique allele seen) to 1 (when 4 different alleles are seen).
 
