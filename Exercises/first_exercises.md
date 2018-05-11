@@ -25,8 +25,8 @@ The file `Datasets/ssr_data.xlsx` contains SSR (Simple Sequence Repeat) data per
 8. The most basic measure of genetic diversity for a marker is simply the number of distinct alleles observed for that marker. Calculate a table of genetic diversity per marker.
 
 9. We will say that a sample is heterozygous for a given marker when at least two different alleles are seen in a marker. Calculate two sets of observed heterozygosity values (simple ratios of heterozygous alleles over all observed alleles):
- + per marker;
- + per sample.
+   + per marker;
+   + per sample.
 
 10. I am not too happy with these binary measures of heterozygosity per sample and per marker: what if I want to consider that a marker with 4 different alleles seen is "more heterozygous" than a marker with only 2 different alleles? Re-run the question above with a new, linear measure of heterozygosity ranging from 0 (for a unique allele seen) to 1 (when 4 different alleles are seen).
 
