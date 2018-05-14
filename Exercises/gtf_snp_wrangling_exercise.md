@@ -4,11 +4,11 @@ You can use R for more than statistics. For instance you can perform simple to c
 
 A. A gtf file describes the gene features of a genome per chromosome. You are provided with a gtf of chicken chr1 `NC_006088.4`. Import the gft file into R using the appropriate read function and assign the file to a new variable. `Gtf files are tab-separated`. 
 1. Rename the columns of your gtf to contain the header of a standard gtf file: `seqname`, `source`, `feature`, `start`, `end`, `score`, `strand`, `frame`, `atrribute`, respectively.
-2. Group the gtf file by the gene id (GeneID). `You will have to extract the GeneID from atribute column using stringr functions`.
+2. Group the gtf file by the gene id (GeneID). `You will have to extract the GeneID from the atribute column using stringr functions`.
 3. How many genes are on this chromosome?
 4. How many non-coding RNA (ncRNA) are on this chromosome?
 5. How many genes are in the positive orientation?
-6. Find the longest genes on chromosome 1 of chicken.
+6. Find the longest and shortest genes on chromosome 1 of chicken.
 7. What is the average length of all genes on this chromosome?
 8. What is the number of exons per gene?
 9. Find the average length of exons per gene.
