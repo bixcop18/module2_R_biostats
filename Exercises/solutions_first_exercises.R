@@ -129,5 +129,5 @@ l = nchar("P11_Allele1")
 minidat_tidy$Allele_num = as.integer(substr(minidat_tidy$Allele_num,start=l,stop=l))
 
 # to rename a column:
-colnames(minidat_tidy)[1] = "Sample" # modifies the data frame
+#colnames(minidat_tidy)[1] = "Sample" # modifies the data frame, OR:
 minidat_tidy %>% rename(Sample=ID) -> minidat_tidy 
