@@ -1,5 +1,6 @@
 library(readxl)
 library(tidyr)
+library(dplyr)
 
 setwd("/home/jbde/Trainings/Biostats_and_R_bixcop_github/module2_R_biostats/")
 
@@ -76,5 +77,66 @@ tidydat %>% filter(!is.na(Allele_length)) %>% group_by(Marker)  %>% summarise(Di
 tidydat %>% group_by(Marker) %>% summarise(Distinct_alleles = n_distinct(Allele_length, na.rm = TRUE))
 
 # Q9
-tidydat %>% group_by(Marker,Sample) %>% summarise(Distinct_alleles = n_distinct(Allele_length, na.rm = TRUE)) # continue by calculating FOR EACH MARKER the ratio of "Distinct_alleles" strictly greater than 1 over number of observations (i.e. number of samples)
+tidydat %>% group_by(Marker,Sample) %>% summarise(Distinct_alleles = n_distinct(Allele_length, na.rm = TRUE)) -> distinct_allele_counts # continue by calculating FOR EACH MARKER the ratio of "Distinct_alleles" strictly greater than 1 over number of observations (i.e. number of samples)
 
+# we have to count within each marker, the number of samples with 2 or more alleles: these are the heterozygous ones samples for that marker. We divide by the total number of observed samples for that marker to get the observed heterozygosity.
+
+# check: do we have zero alleles for some individuals?
+unique(distinct_allele_counts$Distinct_alleles)
+subset(distinct_allele_counts,Distinct_alleles==0)
+# same as above, but the dplyr way:
+distinct_allele_counts %>% filter(Distinct_alleles==0)
+
+distinct_allele_counts
+# the data at this stage is grouped by marker. The number of observations (rows) in each group is the number of samples for which we have a non-NA, non-0 value for the number of distinct alleles. 
+# How do we get the counts per group?
+distinct_allele_counts %>% summarise(n()) # all our groups have same size: 62
+
+# we want to count the number of observations >= 2, for each group
+heterozygous = function(inputvec) { sum(inputvec >= 2) }
+
+# the function below accommodates also input vectors containing NAs
+# calculated ratio is: number of observations larger than two dividided by total number of (non-NA) observations
+heterozygous_ratio = function(inputvec) { sum(inputvec >= 2, na.rm=T) / sum(!is.na(inputvec)) }
+
+# at this stage distinct_allele_counts already contained the grouping per marker.
+distinct_allele_counts %>% summarise(observed_het_ratio = heterozygous_ratio(Distinct_alleles)) 
+# and we have the observed heterozygosity values _per marker_
+
+distinct_allele_counts %>% group_by(Sample) %>% summarise(counts=n()) %>% `[[`("counts") %>% unique()
+# here we used the functional version of the operator "[[...]]" that extracts an element from a list (and remember: a data frame is a list of column vectors)
+
+distinct_allele_counts %>% group_by(Sample) %>% summarise(observed_het_ratio = heterozygous_ratio(Distinct_alleles))
+# this is the table of per-sample heterozygosity values
+
+# Q10: a new measure of heterozygosity per sample and per marker:
+# 1 allele seen => het = 0/3
+# 2 distinct alleles seen => het = 1/3
+# 3 distinct alleles seen => het = 2/3
+# 4 distinct alleles seen => het = 3/3
+
+num_alleles_to_het = function (n) { ifelse(n==1,0,ifelse(n==2,1/3,ifelse(n==3,2/3,1))) } # works but UGLY
+num_alleles_to_het = function (n) { (n-1)/3 }
+# or even:
+num_alleles_to_het = function (n) { c(0,1/3,2/3,1)[n] }
+# you can also write such a conversion function using the function match()
+
+num_alleles_to_het(c(1,1,2,2,3,1,4,4,1,2)) # testing that the function works ok
+
+c=10:13
+c[c(1,3,2,3,3,2,1,1,19)]
+
+distinct_allele_counts %>% transmute(Sample=Sample, fancy_het_measure = num_alleles_to_het(Distinct_alleles)) %>% group_by(Marker) %>% summarise(fancy_het_measure=mean(fancy_het_measure)) # table per markers
+
+distinct_allele_counts %>% mutate(fancy_het_measure = num_alleles_to_het(Distinct_alleles)) %>% group_by(Sample) %>% summarise(fancy_het_measure=mean(fancy_het_measure)) # table per samples
+
+
+# Q11
+
+# we will calculate allele frequencies out of observed counts of the alleles across the 62 samples.
+# (1) when a single allele was seen in a given sample, it gives a count of 4 observations of that allele
+# (2) when two different alleles are seen in a given sample, it gives a count of 2 for each of these two alleles
+# (3) when three different alleles are seen in a given sample, it gives a count of 4/3 for each of these allelles
+# (4) when four different alleles are seen in a given sample, we have a count of 1 for each of these alleles
+
+# then for each marker you calculate the frequencies of each allele using the counts above.
