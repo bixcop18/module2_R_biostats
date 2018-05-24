@@ -12,7 +12,10 @@ tpm.data[1:5,1:5]
 #install.packages("RColorBrewer")
 #install.packages("gplots")
 library(RColorBrewer)
-library(gplots)
+library(gplots) 
+
+# NB can also use gplots for venn diagrams
+# make venn diagram: https://cran.r-project.org/web/packages/gplots/vignettes/venn.pdf
 
 # get subsets of relevant data i.e. separate out the group 1 and group 5 nullitetras
 
@@ -28,7 +31,7 @@ dim(tpm.data)
 # get rid of any rows which have no gene expression
 tpm.data <- tpm.data[rowSums(tpm.data) != 0,]
 dim(tpm.data)
-# gets rid of ~2,500 genes
+# gets rid of ~300 genes
 
 
 ################
@@ -54,25 +57,24 @@ head(nulli_tetra_shoots_chrom1)
 nulli_tetra_roots_chrom1 <- tpm.data[,c(2,21:26)]
 head(nulli_tetra_roots_chrom1)
 #########################
-### NB to swap between 1A, 1B and 1D just replace all 1A with 1B or 1D
 
 # plot gene expression for genes on chromosome 1 in group1 nullitetras + euploid
 
 # select only genes on chrom 1A and in nullichrom1_shoots
 
-chrom1A_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1A[L|S]_*",row.names(nulli_tetra_shoots_chrom1), perl = TRUE)),])
+chrom1A_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1A[L|S]_*",row.names(nulli_tetra_shoots_chrom1))),])
 head(chrom1A_genes_in_nulli_shoot_chrom1)
 tail(chrom1A_genes_in_nulli_shoot_chrom1)
 
 # select only genes on chrom 1B and in nullichrom1_shoots
 
-chrom1B_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1B[L|S]_*",row.names(nulli_tetra_shoots_chrom1), perl = TRUE)),])
+chrom1B_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1B[L|S]_*",row.names(nulli_tetra_shoots_chrom1))),])
 head(chrom1B_genes_in_nulli_shoot_chrom1)
 tail(chrom1B_genes_in_nulli_shoot_chrom1)
 
 # select only genes on chrom 1Dand in nullichrom1_shoots
 
-chrom1D_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1D[L|S]_*",row.names(nulli_tetra_shoots_chrom1), perl = TRUE)),])
+chrom1D_genes_in_nulli_shoot_chrom1 <- as.matrix(nulli_tetra_shoots_chrom1[(grep("Traes_1D[L|S]_*",row.names(nulli_tetra_shoots_chrom1))),])
 head(chrom1D_genes_in_nulli_shoot_chrom1)
 tail(chrom1D_genes_in_nulli_shoot_chrom1)
 
@@ -91,11 +93,22 @@ top100exprWT_chrom1A_genes_in_nulli_shoot_chrom1 <- head(chrom1A_genes_in_nulli_
 head(top100exprWT_chrom1A_genes_in_nulli_shoot_chrom1)
 dim(top100exprWT_chrom1A_genes_in_nulli_shoot_chrom1)
 
-# draw heatmap of these allgenes_exprWT_chrom1A_nulli_shoot_chrom1
 jpeg(file="100_top_genes_exprWT_chrom1A_nulli_shoot_chrom1_heatmap.jpg", height=1000, width=1000)
 par(mar=c(20,11,4,3)+0.1,mgp=c(6,1,0))
 
-heatmap.2(top100exprWT_chrom1A_genes_in_nulli_shoot_chrom1, col=rev(heat.colors(75)), Rowv=FALSE, Colv=FALSE, dendrogram= "none", key=TRUE,
-          keysize=0.5,trace="none",  density.info="none", scale="row",margins = c(15,10), main= "Top 100 expressed chrom1A genes in shoots")
+heatmap.2(top100exprWT_chrom1A_genes_in_nulli_shoot_chrom1, 
+          col=rev(heat.colors(75)), 
+          Rowv=FALSE, # turn off clustering rows
+          Colv=FALSE, # turn off clustering columns
+          dendrogram= "none", # turn off dendrogram
+          key=TRUE, # add key
+          keysize=0.5, # make key smaller
+          trace="none",  # turn off blue line showing expression level
+          scale="row", # scales data for each row to be equal to the same sum
+          margins = c(15,10), #set margin
+          main= "Top 100 expressed chrom1A genes in shoots", # add title
+          density.info="none") # get rid of blue line on legend
 dev.off()
+
+
 
